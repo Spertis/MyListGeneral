@@ -1,17 +1,14 @@
 package com.company;
 
-import java.util.Collection;
-import java.util.Iterator;
-
+        import java.util.Collection;
+        import java.util.Iterator;
 
 public class MyList<T> implements Collection<T> {
-    private long counter;
-
-    class Item<T>{
+    class Node<T>{
         private T value;
-        private Item<T> next;
+        private Node<T> next;
 
-        public Item(T value){
+        public Node(T value){
             this.value = value;
             this.next = null;
         }
@@ -33,11 +30,11 @@ public class MyList<T> implements Collection<T> {
             this.value = value;
         }
 
-        public Item<T> getNext(){
+        public Node<T> getNext(){
             return next;
         }
 
-        public void setNext(Item<T> next){
+        public void setNext(Node<T> next){
             this.next = next;
         }
 
@@ -49,7 +46,7 @@ public class MyList<T> implements Collection<T> {
     }
 
     public int length;
-    private Item<T> root;
+    private Node<T> root;
     private Comparable comp;
 
     public MyList(Comparable comp){
@@ -63,10 +60,10 @@ public class MyList<T> implements Collection<T> {
         return length;
     }
 
-    public Item end(){
+    public Node end(){
         if (this.root == null)
             return null;
-        Item<T> p = this.root;
+        Node<T> p = this.root;
         while (p.hasNext()) {
             p = p.getNext();
         }
@@ -74,7 +71,7 @@ public class MyList<T> implements Collection<T> {
     }
 
     public T Get(int index){
-        Item<T> p = root;
+        Node<T> p = root;
         for (int i = 0; i<index; i++){
             p = p.getNext();
         }
@@ -113,13 +110,13 @@ public class MyList<T> implements Collection<T> {
     }
 
     @Override
-    public boolean add(T pValue){
-        Item<T> newItem = new Item<T>(pValue);
-        Item<T> iter = this.end();
+    public boolean add(T Value){
+        Node<T> node = new Node<T>(Value);
+        Node<T> iter = this.end();
         if (iter == null)
-            this.root = newItem;
+            this.root = node;
         else
-            iter.setNext(newItem);
+            iter.setNext(node);
         this.length += 1;
 
         return true;
@@ -161,7 +158,7 @@ public class MyList<T> implements Collection<T> {
             return null;
         }
         else {
-            Item<T> iter = this.root;
+            Node<T> iter = this.root;
             while (iter.hasNext()) {
                 result += iter.toString() + ", ";
                 iter = iter.getNext();
@@ -173,19 +170,19 @@ public class MyList<T> implements Collection<T> {
     }
 
     public void swap(int firstPos, int secondPos) {
-        Item<T> nextLink1 = null;
-        Item<T> nextLink2 = null;
+        Node<T> nextLink1 = null;
+        Node<T> nextLink2 = null;
         int firstNumber = firstPos;
         int secondNumber = secondPos;
-        Item<T> link1 = null;
-        Item<T> link2 = null;
-        Item<T> previousLink1 = null;
-        Item<T> previousLink2 = null;
+        Node<T> link1 = null;
+        Node<T> link2 = null;
+        Node<T> previousLink1 = null;
+        Node<T> previousLink2 = null;
         boolean flag = (firstPos == 0 || secondPos == 0);
 
 
-        if (-1 + this.counter >= firstNumber) {
-            Item iter = this.root;
+        if (-1 + this.length >= firstNumber) {
+            Node<T> iter = this.root;
             for (; firstNumber >= 0; --firstNumber) {
                 iter = iter.getNext();
             }
@@ -209,8 +206,8 @@ public class MyList<T> implements Collection<T> {
         firstNumber = firstPos;
 
 
-        if (-1 + this.counter >= secondNumber) {
-            Item iter = this.root;
+        if (-1 + this.length >= secondNumber) {
+            Node<T> iter = this.root;
             for (; secondNumber >= 0; --secondNumber) {
                 iter = iter.getNext();
             }
@@ -232,7 +229,7 @@ public class MyList<T> implements Collection<T> {
             secondNumber = secondPos;
 
         }
-        Item iter = this.root;
+        Node<T> iter = this.root;
 
         while (iter != null) {
             if (!flag) {
@@ -301,8 +298,7 @@ public class MyList<T> implements Collection<T> {
                             iter = iter.getNext();
                         }
                     }
-                }
-                else {
+                } else {
                     iter.setNext(link2);
                     iter = iter.getNext();
                     iter.setNext(nextLink1);
@@ -312,30 +308,33 @@ public class MyList<T> implements Collection<T> {
         }
     }
 
+    /*
+    Внизу нерабочее ******, метод compare - помойка
+     */
 
-    public void Sort(){
-        int length = this.getLength();
-        while (length > 0){
-            for (int i = 0; i < length - 1; i++)
-            {
-                Item <T> a = indexAt(i);
-                Item <T> b = indexAt(i+1);
-                if (comp.compare(a, b) > 0)
-                {
-                    this.swap(i, i + 1);
-                }
-            }
-            length--;
-        }
-    }
+//    public void sort(){
+//        int z = this.getLength();
+//        while (z > 0){
+//            for (int i = 0; i < z - 1; i++)
+//            {
+//                Node<T> a = indexAt(i);
+//                Node<T> b = indexAt(i+1);
+//
+//
+//                if (comp.compare(a, b) == 1) {
+//                    this.swap(i, i + 1);
+//                }
+//            }
+//            z--;
+//        }
+//    }
 
-    public Item indexAt ( int index){
-        if ((index <= this.counter - 1) & (index >= 0)) {
-            Item p = this.root;
+    public Node indexAt (int index){
+        if ((index <= this.length - 1) & (index >= 0)) {
+            Node p = root;
             for (; index > 0; --index) {
                 p = p.getNext();
             }
-            System.out.println(p);
             return p;
         } else
             return null;
@@ -344,5 +343,5 @@ public class MyList<T> implements Collection<T> {
 }
 
 interface Comparable {
-    int compare(MyList.Item a, MyList.Item b);
+    int compare(MyList.Node a, MyList.Node b);
 }
